@@ -1,0 +1,32 @@
+{
+  "name": "placement-experiences-backend",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/manishbobburi/placement-experiences-backend#readme",
+  "bugs": {
+    "url": "https://github.com/manishbobburi/placement-experiences-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manishbobburi/placement-experiences-backend.git"
+  },
+  "license": "ISC",
+  "author": "Manish Bobburi",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "http-status-codes": "^2.3.0",
+    "mysql2": "^3.15.3",
+    "nodemon": "^3.1.11",
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.3"
+  }
+}
