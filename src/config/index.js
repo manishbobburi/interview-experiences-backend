@@ -1,3 +1,3 @@
 module.exports = {
-    DBConfig: require("./db"),
+    ServerConfig: require("./server-config"),
 }
