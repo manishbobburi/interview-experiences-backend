@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { AppError } = require("../utils/errors");
+const { AppError } = require("../utils/error");
 const { userService } = require("../services");
 
 function validateAuthRequest(req, res, next) {
