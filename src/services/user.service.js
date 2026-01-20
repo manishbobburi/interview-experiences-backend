@@ -51,12 +51,12 @@ async function signIn({ email, passwordHash }) {
 
     const token = Auth.createToken({ id: user.id, email: user.email });
 
-    const { password: _, createdAt, updatedAt, ...safeUser } =
+    const { passwordHash: _, createdAt, updatedAt, ...safeUser } =
         user.dataValues;
 
     return {
-        ...safeUser,
-        jwt: token,
+        user: {...safeUser},
+        token: token,
     };
 }
 
@@ -101,9 +101,26 @@ async function isAuthenticated(token) {
     return user.id;
 }
 
+async function getMe(id) {
+    const user = await userRepository.get(id);
+    if (!user) {
+        throw new AppError(
+            "User not found",
+            StatusCodes.NOT_FOUND,
+            "USER_NOT_FOUND"
+        );
+    }
+
+    const { passwordHash: _, createdAt, updatedAt, ...safeUser } =
+        user.dataValues;
+
+    return { user: {...safeUser} };
+}
+
 
 module.exports = {
     signUp,
     signIn,
     isAuthenticated,
+    getMe,
 }
