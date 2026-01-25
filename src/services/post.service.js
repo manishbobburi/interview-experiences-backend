@@ -14,8 +14,13 @@ async function getPost(id) {
     return response;
 }
 
+async function getPostsByUserId(userId) {
+    const response = await postRepository.findPostsByUserId(userId);
+    return response;
+}
+
 async function getAllPosts() {
-    const response = await postRepository.getAll();
+    const response = await postRepository.findPosts();
     return response;
 }
 
@@ -27,6 +32,7 @@ async function deletePost(id) {
 module.exports = {
     createPost,
     getPost,
+    getPostsByUserId,
     getAllPosts,
     deletePost,
 }
