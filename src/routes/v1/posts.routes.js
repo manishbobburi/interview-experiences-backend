@@ -2,20 +2,30 @@ const express = require("express");
 const router = express.Router();
 
 const { postController } = require("../../controllers");
-
-router.post("/", 
-    postController.createPost
-);
-
-router.get("/:id",
-    postController.getPost
-);
+const { authMiddleware, postMiddleware } = require("../../middleware");
 
 router.get("/",
     postController.getAllPosts
 );
 
+router.get("/:id",
+    authMiddleware.checkAuth,
+    postController.getPost
+);
+
+router.get("/user/:userId",
+    authMiddleware.checkAuth,
+    postController.getPostsByUserId  
+);
+
+router.post("/",
+    authMiddleware.checkAuth,
+    postMiddleware.validateCreatePost,
+    postController.createPost
+);
+
 router.delete("/:id",
+    authMiddleware.checkAuth,
     postController.deletePost
 );
 
