@@ -5,7 +5,7 @@ const { sendSuccess } = require("../utils/common");
 
 async function createPost(req, res, next) {
     try {
-        const post = await postService.createPost(req.body);
+        const post = await postService.createPost(req.validatedBody);
 
         return sendSuccess(
             res,
@@ -21,6 +21,21 @@ async function createPost(req, res, next) {
 async function getPost(req, res, next) {
     try {
         const post = await postService.getPost(req.params.id);
+
+        return sendSuccess(
+            res,
+            post,
+            "Post retrieved successfully",
+            StatusCodes.OK
+        );
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function getPostsByUserId(req, res, next) {
+    try {
+        const post = await postService.getPostsByUserId(req.params.userId);
 
         return sendSuccess(
             res,
@@ -50,7 +65,7 @@ async function getAllPosts(req, res, next) {
 
 async function deletePost(req, res, next) {
     try {
-        const response = await postService.deletePost(req.body.id);
+        const response = await postService.deletePost(req.params.id);
 
         return sendSuccess(
             res,
@@ -66,6 +81,7 @@ async function deletePost(req, res, next) {
 module.exports = {
     createPost,
     getPost,
+    getPostsByUserId,
     getAllPosts,
     deletePost,
 }
