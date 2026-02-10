@@ -39,7 +39,7 @@ async function checkAuth(req, res, next) {
         }
 
         const userId = await userService.isAuthenticated(token);
-        req.user = userId;
+        req.userId = userId;
 
         next();
     } catch (err) {
