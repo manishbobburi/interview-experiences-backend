@@ -17,4 +17,14 @@ router.get("/me",
     userController.getMe
 )
 
+router.patch("/",
+    authMiddleware.checkAuth,
+    userController.updateUserDetails
+)
+
+router.post("/change-password",
+    authMiddleware.checkAuth,
+    userController.changePassword
+)
+
 module.exports = router;
