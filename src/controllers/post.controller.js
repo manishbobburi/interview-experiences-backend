@@ -50,7 +50,15 @@ async function getPostsByUserId(req, res, next) {
 
 async function getAllPosts(req, res, next) {
     try {
-        const posts = await postService.getAllPosts();
+        const cursor =
+            req.query.createdAt && req.query.id
+                ? {
+                    createdAt: req.query.createdAt,
+                    id: Number(req.query.id),
+                }
+                : null;
+
+        const posts = await postService.getAllPosts(cursor);
         
         return sendSuccess(
             res,

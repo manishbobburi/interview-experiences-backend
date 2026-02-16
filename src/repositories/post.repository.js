@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const CrudRepository = require("./crud.repository");
 const { Post, User } = require("../models");
 
@@ -6,44 +7,80 @@ class PostRepository extends CrudRepository {
         super(Post);
     }
 
-    async findPosts() {
+    async findPosts(cursor) {
+        const limit = 20;
+
+        const where = cursor
+         ? {
+            [Op.or]: [
+                { createdAt: { [Op.lt]: cursor.createdAt } },
+                {
+                    createdAt: cursor.createdAt,
+                    id: { [Op.lt]: cursor.id },
+                },
+            ],
+         } 
+        : {};
+
         const posts = await Post.findAll({
+            where,
             order: [
-                ['createdAt', 'DESC']
+                ["createdAt", "DESC"],
+                ["id", "DESC"]
             ],
             include: [
                 {
                     model: User,
-                    as: 'user',
-                    attributes: ['name'],
+                    as: "user",
+                    attributes: ["name"],
                 }
-            ]
+            ],
+            limit,
         });
 
         const response = posts.map(post => ({
            ...post.toJSON(),
-           displayName: post.isAnonymous ? 'Anonymous' : post.user?.name,
+           displayName: post.isAnonymous ? "Anonymous" : post.user?.name,
            user: post.isAnonymous ? null : post.user,
            userId: post.isAnonymous ? null : post.userId,
         }));
 
-        return response;
+        const nextCursor = 
+        posts.length === limit
+        ? {
+            createdAt: posts[posts.length - 1].createdAt,
+            id: posts[posts.length - 1].id,
+        }
+        : null;
+
+        return { 
+            items: response,
+            nextCursor,
+            hasMore: nextCursor !== null
+        };
     }
+
     async findPostsByUserId(userId) {
         const posts = await Post.findAll({
             where: {userId: userId},
             order: [
-                ['createdAt', 'DESC']
+                ["createdAt", "DESC"]
             ],
             include: [
                 {
                     model: User,
-                    as: 'user',
-                    attributes: ['name'],
+                    as: "user",
+                    attributes: ["name"],
                 }
             ]
         });
-        return posts;
+        const response = posts.map(post => ({
+           ...post.toJSON(),
+           displayName: post.isAnonymous ? "Anonymous" : post.user?.name,
+           user: post.isAnonymous ? null : post.user,
+           userId: post.userId,
+        }));
+        return response;
     }
 }
 

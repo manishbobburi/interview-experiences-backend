@@ -19,8 +19,8 @@ async function getPostsByUserId(userId) {
     return response;
 }
 
-async function getAllPosts() {
-    const response = await postRepository.findPosts();
+async function getAllPosts(cursor) {
+    const response = await postRepository.findPosts(cursor);
     return response;
 }
 
