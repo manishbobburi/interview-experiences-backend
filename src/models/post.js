@@ -15,12 +15,20 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'user'
       });
+
+      this.belongsTo(models.Company, {
+        foreignKey: "companyId",
+        as: 'company',
+      })
     }
   }
 
   Post.init({
     userId: DataTypes.INTEGER,
-    company: DataTypes.STRING,
+    companyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     role: DataTypes.STRING,
     overallDifficulty: DataTypes.INTEGER,
     body: DataTypes.STRING,
