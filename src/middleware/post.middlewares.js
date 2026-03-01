@@ -21,8 +21,8 @@ function validateCreatePost(req, res, next) {
     };
 
     const validators = {
-        company: v => 
-            typeof v === 'string' && v.trim().length >= 2,
+        companyId: v => 
+            Number.isInteger(v) && v > 0,
 
         role: v => 
             typeof v === 'string' && v.trim().length >= 2,
@@ -49,7 +49,7 @@ function validateCreatePost(req, res, next) {
 
     req.validatedBody = {
         userId,
-        company: req.body.company.trim(),
+        companyId: req.body.companyId,
         role: req.body.role.trim(),
         body: req.body.summary.trim(),
         overallDifficulty:difficultyMap[req.body.difficulty],
