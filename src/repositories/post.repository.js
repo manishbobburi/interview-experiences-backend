@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const CrudRepository = require("./crud.repository");
-const { Post, User } = require("../models");
+const { Post, User, Company } = require("../models");
 
 class PostRepository extends CrudRepository {
     constructor() {
@@ -33,6 +33,11 @@ class PostRepository extends CrudRepository {
                     model: User,
                     as: "user",
                     attributes: ["name"],
+                },
+                {
+                    model: Company,
+                    as: "company",
+                    attributes: ["id", "name", "logoUrl"],
                 }
             ],
             limit,
@@ -71,6 +76,11 @@ class PostRepository extends CrudRepository {
                     model: User,
                     as: "user",
                     attributes: ["name"],
+                },
+                {
+                    model: Company,
+                    as: "company",
+                    attributes: ["id", "name", "logoUrl"],
                 }
             ]
         });
@@ -82,6 +92,33 @@ class PostRepository extends CrudRepository {
         }));
         return response;
     }
+
+    async findPostById(userId) {
+        const post = await Post.findByPk(
+            userId, {
+            include: [
+                {
+                    model: User,
+                    as: "user",
+                    attributes: ["name"],
+                },
+                {
+                    model: Company,
+                    as: "company",
+                    attributes: ["id", "name", "logoUrl"],
+                }
+            ],
+        });
+
+        const response = {
+           ...post.toJSON(),
+           displayName: post.isAnonymous ? "Anonymous" : post.user?.name,
+           user: post.isAnonymous ? null : post.user,
+           userId: post.isAnonymous ? null : post.userId,
+        };
+        return response;
+    }
+
 }
 
 module.exports = PostRepository;

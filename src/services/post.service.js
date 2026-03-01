@@ -10,7 +10,7 @@ async function createPost(data) {
 }
 
 async function getPost(id) {
-    const response = await postRepository.get(id);
+    const response = await postRepository.findPostById(id);
     return response;
 }
 
