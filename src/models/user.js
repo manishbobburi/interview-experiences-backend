@@ -21,12 +21,20 @@ module.exports = (sequelize, DataTypes) => {
         as: 'posts',
         onDelete: 'CASCADE',
       });
+
+      this.belongsTo(models.Role, {
+        foreignKey: "roleId",
+        as: "role",
+      });
     }
   }
   User.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
-    role: DataTypes.STRING,
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     passwordHash: DataTypes.STRING,
     verified: DataTypes.BOOLEAN
   }, {
