@@ -19,6 +19,22 @@ async function getCompanies(req, res, next) {
     }
 }
 
+async function addCompanies(req, res, next) {
+    try {
+        const response = await companyService.addCompanies(req.body);
+
+        return sendSuccess(
+            res,
+            response,
+            "Companies added successfully",
+            StatusCodes.CREATED
+        );
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     getCompanies,
+    addCompanies,
 }
