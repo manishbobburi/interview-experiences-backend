@@ -30,7 +30,7 @@ async function signIn(req, res, next) {
 
 async function getMe(req, res, next) {
     try {
-        const user = await userService.getMe(req.userId);
+        const user = await userService.getMe(req.user.email);
         return sendSuccess(res, user, "Fetched user successfully", StatusCodes.OK);
     } catch (err) {
         next(err);
