@@ -38,8 +38,8 @@ async function checkAuth(req, res, next) {
             );
         }
 
-        const userId = await userService.isAuthenticated(token);
-        req.userId = userId;
+        const user = await userService.isAuthenticated(token);
+        req.user = user;
 
         next();
     } catch (err) {
