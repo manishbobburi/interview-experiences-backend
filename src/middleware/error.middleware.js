@@ -3,7 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 function errorHandler(err, req, res, next) {
     const statusCode = Number.isInteger(err.statusCode) && err.statusCode >= 400 ? err.statusCode : StatusCodes.INTERNAL_SERVER_ERROR;
     
-    if (process.env.NODE_ENV !== "test") {
+    if (process.env.NODE_ENV !== "production") {
         console.error(err.stack);
     }
 
