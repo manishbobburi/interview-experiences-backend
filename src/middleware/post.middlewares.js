@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils/error");
 
 function validateCreatePost(req, res, next) {
-    const userId = req.userId;
+    const userId = req.user.id;
 
     if(!userId) {
         throw new AppError(
@@ -41,8 +41,9 @@ function validateCreatePost(req, res, next) {
     if (invalidFields.length) {
         return next(
             new AppError(
-                { message: 'Validation failed', invalidFields },
-                StatusCodes.BAD_REQUEST
+                invalidFields,
+                StatusCodes.BAD_REQUEST,
+                "INVALID_FIELDS"
             )
         );
     }
