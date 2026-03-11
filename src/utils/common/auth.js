@@ -8,9 +8,9 @@ function checkPassword(password, encryptedPassword) {
     return isMatched;
 }
 
-function createToken(input) {
+function createToken(payload) {
     try {
-        return jwt.sign(input, ServerConfig.JWT_SECRET, {expiresIn: ServerConfig.JWT_EXPIRY});
+        return jwt.sign(payload, ServerConfig.JWT_SECRET, {expiresIn: ServerConfig.JWT_EXPIRY});
     } catch(error) {
         console.error(error);
         throw error;

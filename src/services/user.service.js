@@ -65,13 +65,23 @@ async function signIn({ email, passwordHash }) {
         );
     }
 
-    const token = Auth.createToken({ id: user.id, email: user.email });
+    const token = Auth.createToken({
+        id: user.id, 
+        email: user.email,
+        roleId: user.roleId,
+    });
 
-    const { passwordHash: _, createdAt, updatedAt, ...safeUser } =
-        user.dataValues;
+    const safeUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        roleId: user.roleId,
+        verified: user.verified,
+        role: user.role,
+    };
 
     return {
-        user: {...safeUser},
+        user: safeUser,
         token: token,
     };
 }
@@ -114,11 +124,17 @@ async function isAuthenticated(token) {
         );
     }
 
-    return user.id;
+    const safeUser = {
+        id: user.id,
+        email: user.email,
+        roleId: user.roleId,
+    };
+
+    return safeUser;
 }
 
-async function getMe(id) {
-    const user = await userRepository.get(id);
+async function getMe(email) {
+    const user = await userRepository.getUserByEmail(email);
     if (!user) {
         throw new AppError(
             "User not found",
