@@ -3,7 +3,7 @@ const { CompanyRepository } = require("../repositories");
 const companyRepository = new CompanyRepository();
 
 async function getCompanies() {
-    const response = await companyRepository.getAll();
+    const response = await companyRepository.getAllSortedByName();
     return response;
 }
 
