@@ -37,7 +37,7 @@ class PostRepository extends CrudRepository {
                 {
                     model: Company,
                     as: "company",
-                    attributes: ["id", "name", "logoUrl"],
+                    attributes: ["id", "name", "logoPath"],
                 }
             ],
             limit,
@@ -80,7 +80,7 @@ class PostRepository extends CrudRepository {
                 {
                     model: Company,
                     as: "company",
-                    attributes: ["id", "name", "logoUrl"],
+                    attributes: ["id", "name", "logoPath"],
                 }
             ]
         });
@@ -105,7 +105,7 @@ class PostRepository extends CrudRepository {
                 {
                     model: Company,
                     as: "company",
-                    attributes: ["id", "name", "logoUrl"],
+                    attributes: ["id", "name", "logoPath"],
                 }
             ],
         });

@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils/error");
 
 async function validateAddCompanies(req, res, next) {
-    const { name, logoUrl } = req.body;
+    const { name, logoPath } = req.body;
 
     if(!name) {
         throw new AppError(
@@ -12,11 +12,11 @@ async function validateAddCompanies(req, res, next) {
         );
     }
 
-    if(!logoUrl) {
+    if(!logoPath) {
         throw new AppError(
-            "Company logo URL is required",
+            "Company logo path is required",
             StatusCodes.BAD_REQUEST,
-            "EMAIL_REQUIRED"
+            "LOGO_PATH_REQUIRED"
         );
     }
 }

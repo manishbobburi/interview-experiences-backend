@@ -6,7 +6,7 @@ const { sendSuccess } = require("../utils/common");
 
 async function getCompanies(req, res, next) {
     try {
-        const response = await companyService.getCompanies(req.validatedBody);
+        const response = await companyService.getCompanies();
 
         return sendSuccess(
             res,
