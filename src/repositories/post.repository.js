@@ -93,9 +93,11 @@ class PostRepository extends CrudRepository {
         return response;
     }
 
-    async findPostById(userId) {
-        const post = await Post.findByPk(
-            userId, {
+    async findPostBySlug(slug) {
+        const post = await Post.findOne({
+            where: {
+                slug: slug
+            },
             include: [
                 {
                     model: User,
