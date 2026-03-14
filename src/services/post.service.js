@@ -1,16 +1,25 @@
-const { StatusCodes } = require("http-status-codes");
-const { AppError } = require("../utils/error");
-const { PostRepository } = require("../repositories");
+const generateSlug = require("../utils/common/slug")
+const { PostRepository, CompanyRepository } = require("../repositories");
 
 const postRepository = new PostRepository();
+const companyRepository = new CompanyRepository();
 
 async function createPost(data) {
-    const response = await postRepository.create(data);
+    const company = await companyRepository.get(data.companyId);
+
+    const slug = generateSlug(company.name, data.role);
+
+    const postData = {
+        ...data,
+        slug,
+    };
+
+    const response = await postRepository.create(postData);
     return response;
 }
 
-async function getPost(id) {
-    const response = await postRepository.findPostById(id);
+async function getPost(slug) {
+    const response = await postRepository.findPostBySlug(slug);
     return response;
 }
 

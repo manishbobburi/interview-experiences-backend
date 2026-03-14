@@ -20,7 +20,7 @@ async function createPost(req, res, next) {
 
 async function getPost(req, res, next) {
     try {
-        const post = await postService.getPost(req.params.id);
+        const post = await postService.getPost(req.params.slug);
 
         return sendSuccess(
             res,

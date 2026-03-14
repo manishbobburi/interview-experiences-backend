@@ -8,7 +8,7 @@ router.get("/",
     postController.getAllPosts
 );
 
-router.get("/:id",
+router.get("/:slug",
     authMiddleware.checkAuth,
     postController.getPost
 );
