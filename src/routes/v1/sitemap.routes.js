@@ -1,0 +1,6 @@
+const router = require("express").Router();
+const { getSitemap } = require("../../controllers/sitemap.controller");
+
+router.get("/sitemap.xml", getSitemap);
+
+module.exports =  router;
