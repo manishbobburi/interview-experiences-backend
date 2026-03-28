@@ -4,4 +4,5 @@ module.exports = {
     postMiddleware: require("./post.middlewares"),
     companyMiddleware: require("./company.middlewares"),
     authorizeMiddleware: require("./authorize.middleware"),
+    rateLimitMiddleware: require("./rateLimit.middleware"),
 };

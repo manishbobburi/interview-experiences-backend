@@ -9,6 +9,7 @@ async function signUp(req, res, next) {
             name: req.body.name,
             email: req.body.email,
             passwordHash: req.body.password,
+            roleId: 1,
         });
         return sendSuccess(res, user, "User signed up successfully", StatusCodes.CREATED);      
     } catch (err) {
