@@ -3,8 +3,9 @@ const express = require("express");
 const cors = require("cors");
 
 const apiRouter = require("./routes");
-const { ServerConfig } = require("./config");
+const { ServerConfig, RedisConfig, RabbitMQ } = require("./config");
 const { errorHandler } = require("./middleware");
+require("./workers/email.worker");
 
 const app = express();
 
@@ -25,4 +26,8 @@ app.use("/api", apiRouter);
 
 app.use(errorHandler);
 
-app.listen(ServerConfig.PORT, () => console.log(`Server started running on PORT:`, ServerConfig.PORT));
+app.listen(ServerConfig.PORT, () => {
+    console.log(`Server started running on PORT:`, ServerConfig.PORT);
+    RedisConfig.connectRedis();
+    RabbitMQ.connect();
+});
