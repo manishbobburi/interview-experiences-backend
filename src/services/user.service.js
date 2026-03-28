@@ -4,17 +4,30 @@ const bcrypt = require("bcrypt");
 const { AppError } = require("../utils/error");
 const { UserRepository } = require("../repositories");
 const { Auth } = require("../utils/common");
-const { ServerConfig } = require("../config");
+const { ServerConfig, RedisConfig: { redisClient } } = require("../config");
+const { sendToken } = require("./token.service");
 
 const userRepository = new UserRepository();
 
 async function signUp(data) {
     try {
         const user = await userRepository.create(data);
+
+        let emailSent = true;
+        try {
+            await sendToken(user.dataValues.email);
+        } catch (error) {
+            console.error("Failed to queue signup verification email:", error);
+            emailSent = false;
+        }
         
         const { passwordHash: _, createdAt, updatedAt, ...safeUser } = user.dataValues;
 
-        return {...safeUser};
+        if (!emailSent) {
+            return {...safeUser, message: "Account created successfully. However, our email dispatch system is currently delayed. Please sign in and request a new verification link later."};
+        }
+        
+        return {...safeUser, message: "Account created successfully. A verification link has been dispatched to your email address."};
     } catch (err) {
         if (err.name === "SequelizeValidationError") {
             throw new AppError(
@@ -64,6 +77,9 @@ async function signIn({ email, passwordHash }) {
             "INVALID_CREDENTIALS"
         );
     }
+
+    // Verification status is no longer hard-blocking login
+    // Users can enter but their actions will be soft-gated
 
     const token = Auth.createToken({
         id: user.id, 
@@ -128,6 +144,7 @@ async function isAuthenticated(token) {
         id: user.id,
         email: user.email,
         roleId: user.roleId,
+        verified: user.verified,
     };
 
     return safeUser;
@@ -204,7 +221,6 @@ async function changePassword(userId, passwords) {
 
     return await userRepository.update(userId, { passwordHash: newHash });
 }
-
 
 module.exports = {
     signUp,

@@ -47,7 +47,19 @@ async function checkAuth(req, res, next) {
     }
 }
 
+async function isVerified(req, res, next) {
+    if (!req.user || !req.user.verified) {
+        return next(new AppError(
+            "Please verify your email to perform this action",
+            StatusCodes.FORBIDDEN,
+            "EMAIL_NOT_VERIFIED"
+        ));
+    }
+    next();
+}
+
 module.exports = {
     validateAuthRequest,
     checkAuth,
+    isVerified,
 };
