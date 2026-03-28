@@ -3,4 +3,5 @@ module.exports = {
     postController: require("./post.controller"),
     voteController: require("./vote.controller"),
     companyController: require("./company.controller"),
+    authController: require("./auth.controller"),
 }

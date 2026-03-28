@@ -20,6 +20,7 @@ router.get("/user/:userId",
 
 router.post("/",
     authMiddleware.checkAuth,
+    authMiddleware.isVerified,
     postMiddleware.validateCreatePost,
     postController.createPost
 );
