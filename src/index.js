@@ -10,7 +10,11 @@ require("./workers/email.worker");
 const app = express();
 
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : [
+      "http://localhost:5173", 
+      "https://www.interview-experiences.tech",
+      "https://interview-experiences.tech"
+    ],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowHeaders: ["Content-Type", "Authorization"],
     credentials: true,
