@@ -26,6 +26,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "roleId",
         as: "role",
       });
+
+      this.hasMany(models.Comment, {
+        foreignKey: "userId",
+        as: "comments",
+        onDelete: "CASCADE",
+      });
+
+      this.hasMany(models.Vote, {
+        foreignKey: "userId",
+        as: "votes",
+        onDelete: "CASCADE",
+      });
     }
   }
   User.init({
