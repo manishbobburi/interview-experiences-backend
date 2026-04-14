@@ -4,6 +4,7 @@ const router = express.Router();
 const usersRouter = require("./users.routes");
 const postsRouter = require("./posts.routes");
 const votesRouter = require("./votes.routes");
+const commentsRouter = require("./comments.routes");
 const companiesRouter = require("./companies.routes");
 const sitemapRouter = require("./sitemap.routes");
 const authRouter = require("./auth.routes");
@@ -15,6 +16,8 @@ router.use("/users", usersRouter);
 router.use("/posts", postsRouter);
 
 router.use("/votes", votesRouter);
+
+router.use("/comments", commentsRouter);
 
 router.use("/companies", companiesRouter);
 

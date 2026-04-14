@@ -21,6 +21,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "companyId",
         as: 'company',
       })
+
+      this.hasMany(models.Comment, {
+        foreignKey: "postId",
+        as: "comments",
+        onDelete: "CASCADE",
+      });
+
+      this.hasMany(models.Vote, {
+        foreignKey: "postId",
+        as: "votes",
+        onDelete: "CASCADE",
+      });
     }
   }
 

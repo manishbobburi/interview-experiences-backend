@@ -1,5 +1,7 @@
 const generateSlug = require("../utils/common/slug")
 const { PostRepository, CompanyRepository } = require("../repositories");
+const { AppError } = require("../utils/error");
+const { StatusCodes } = require("http-status-codes");
 
 const postRepository = new PostRepository();
 const companyRepository = new CompanyRepository();
@@ -18,22 +20,28 @@ async function createPost(data) {
     return response;
 }
 
-async function getPost(slug) {
-    const response = await postRepository.findPostBySlug(slug);
+async function getPost(slug, userId) {
+    const response = await postRepository.findPostBySlug(slug, userId);
     return response;
 }
 
-async function getPostsByUserId(userId) {
-    const response = await postRepository.findPostsByUserId(userId);
+async function getPostsByUserId(userId, reqUserId) {
+    const response = await postRepository.findPostsByUserId(userId, reqUserId);
     return response;
 }
 
-async function getAllPosts(cursor) {
-    const response = await postRepository.findPosts(cursor);
+async function getAllPosts(cursor, userId) {
+    const response = await postRepository.findPosts(cursor, userId);
     return response;
 }
 
-async function deletePost(id) {
+async function deletePost(id, reqUser) {
+    const post = await postRepository.get(id);
+
+    if (post.userId !== reqUser.id && reqUser.role?.name !== 'ADMIN') {
+        throw new AppError("Forbidden: You do not have permission to delete this post", StatusCodes.FORBIDDEN);
+    }
+
     const response = await postRepository.destroy(id);
     return response;
 }

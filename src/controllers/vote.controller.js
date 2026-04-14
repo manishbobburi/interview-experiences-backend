@@ -3,45 +3,19 @@ const { StatusCodes } = require("http-status-codes");
 const { voteService } = require("../services");
 const { sendSuccess } = require("../utils/common");
 
-async function upVote(req, res, next) {
+async function toggleLike(req, res, next) {
     try {
-        const vote = await voteService.upVote(req.body);
+        const payload = {
+            userId: req.user.id,
+            postId: req.body.postId
+        };
+        const result = await voteService.toggleLike(payload);
 
         return sendSuccess(
             res, 
-            vote, 
-            "Up vote successfull", 
-            StatusCodes.CREATED
-        );      
-    } catch (err) {
-        next(err);
-    }
-}
-
-async function downVote(req, res, next) {
-    try {
-        const vote = await voteService.downVote(req.body);
-
-        return sendSuccess(
-            res, 
-            vote, 
-            "Down vote successfull", 
-            StatusCodes.CREATED
-        );      
-    } catch (err) {
-        next(err);
-    }
-}
-
-async function removeVote(req, res, next) {
-    try {
-        const vote = await voteService.removeVote(req.body);
-
-        return sendSuccess(
-            res, 
-            vote, 
-            "Removed vote successfully", 
-            StatusCodes.CREATED
+            result, 
+            result.liked ? "Liked successfully" : "Unliked successfully", 
+            StatusCodes.OK
         );      
     } catch (err) {
         next(err);
@@ -49,7 +23,5 @@ async function removeVote(req, res, next) {
 }
 
 module.exports = {
-    upVote,
-    downVote,
-    removeVote,
+    toggleLike,
 }

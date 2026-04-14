@@ -24,6 +24,7 @@ async function verifyEmail(inputToken) {
     }
     
     await userRepository.update(user.id, { verified: true});
+    await redisClient.del(`verify:${inputToken}`);
     await redisClient.del(`verify_email:${email}`);
 
     return true;

@@ -8,7 +8,6 @@ const htmlTemplate = (name, validTime, token) => {
   });
 
   const verificationUrl = `${ServerConfig.BASE_URL}/verify-email?token=${token}`;
-  console.log(verificationUrl);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -79,7 +78,6 @@ const htmlTemplate = (name, validTime, token) => {
 
 async function sendEmail(to, subject, token) {
     try {
-      console.log(token);
         const response = await Mailer.sendMail({
             from: ServerConfig.GMAIL_EMAIL,
             to: to,

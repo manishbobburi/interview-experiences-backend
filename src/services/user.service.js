@@ -78,9 +78,6 @@ async function signIn({ email, passwordHash }) {
         );
     }
 
-    // Verification status is no longer hard-blocking login
-    // Users can enter but their actions will be soft-gated
-
     const token = Auth.createToken({
         id: user.id, 
         email: user.email,
@@ -131,7 +128,11 @@ async function isAuthenticated(token) {
         );
     }
 
-    const user = await userRepository.get(payload.id);
+    const { Role } = require("../models");
+
+    const user = await userRepository.model.findByPk(payload.id, {
+        include: [{ model: Role, as: "role", attributes: ["name"] }],
+    });
     if (!user) {
         throw new AppError(
             "User not found",
@@ -145,6 +146,7 @@ async function isAuthenticated(token) {
         email: user.email,
         roleId: user.roleId,
         verified: user.verified,
+        role: user.role,
     };
 
     return safeUser;

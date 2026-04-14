@@ -4,4 +4,5 @@ module.exports = {
     voteController: require("./vote.controller"),
     companyController: require("./company.controller"),
     authController: require("./auth.controller"),
+    commentController: require("./comment.controller"),
 }

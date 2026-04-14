@@ -6,4 +6,5 @@ module.exports = {
     emailService: require("./email.service"),
     tokenService: require("./token.service"),
     authService: require("./auth.service"),
+    commentService: require("./comment.service"),
 }

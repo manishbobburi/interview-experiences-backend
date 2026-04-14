@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
-const { postService } = require("../services");
+const { postService, userService } = require("../services");
 const { sendSuccess } = require("../utils/common");
 
 async function createPost(req, res, next) {
@@ -20,7 +20,8 @@ async function createPost(req, res, next) {
 
 async function getPost(req, res, next) {
     try {
-        const post = await postService.getPost(req.params.slug);
+        const userId = req.user?.id;
+        const post = await postService.getPost(req.params.slug, userId);
 
         return sendSuccess(
             res,
@@ -35,7 +36,7 @@ async function getPost(req, res, next) {
 
 async function getPostsByUserId(req, res, next) {
     try {
-        const post = await postService.getPostsByUserId(req.params.userId);
+        const post = await postService.getPostsByUserId(req.params.userId, req.user?.id);
 
         return sendSuccess(
             res,
@@ -58,7 +59,14 @@ async function getAllPosts(req, res, next) {
                 }
                 : null;
 
-        const posts = await postService.getAllPosts(cursor);
+        let userId = null;
+        const token = req.headers["x-access-token"] || req.headers.authorization?.split(" ")[1];
+        if (token) {
+            const user = await userService.isAuthenticated(token);
+            userId = user.id;
+        }
+
+        const posts = await postService.getAllPosts(cursor, userId);
         
         return sendSuccess(
             res,
@@ -73,7 +81,7 @@ async function getAllPosts(req, res, next) {
 
 async function deletePost(req, res, next) {
     try {
-        const response = await postService.deletePost(req.params.id);
+        const response = await postService.deletePost(req.params.id, req.user);
 
         return sendSuccess(
             res,
