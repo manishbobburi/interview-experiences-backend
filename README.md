@@ -2,6 +2,10 @@
 
 This repository contains the RESTful API backend for the **Interview Experiences** platform. Designed for scalability and maintainability, it leverages a multi-tier architecture to securely handle user authentication, post curation, comment interactions, and asynchronous email delivery.
 
+## Related Repositories
+ - Frontend: [Interview Experiences - Frontend](https://github.com/manishbobburi/interview-experiences-frontend)
+ - Backend (Current Repository): This repository.
+   
 ## Technical Architecture
 
 Built on **Node.js** and **Express.js**, the backend implements a robust design pattern separating the HTTP layer from business logic and data access.
